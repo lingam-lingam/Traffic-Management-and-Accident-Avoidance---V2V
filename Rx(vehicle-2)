@@ -1,0 +1,67 @@
+#define ldr A0
+#define redLED 2
+#define yellowLED 3
+#define greenLED 4
+
+String receivedSignal;
+unsigned long lastSignalTime = 0;
+const unsigned long signalTimeout = 3000; // 3 seconds
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(ldr, INPUT_PULLUP);
+  pinMode(redLED, OUTPUT);
+  pinMode(yellowLED, OUTPUT);
+  pinMode(greenLED, OUTPUT);
+}
+
+void loop() {
+  int val = digitalRead(ldr);
+
+  if (val == LOW) {
+    receivedSignal = readSignal();
+    if (receivedSignal == "RED_STOP") {
+      digitalWrite(redLED, HIGH);
+      delay(1000);
+      digitalWrite(redLED, LOW);
+    } else if (receivedSignal == "YELLOW_READY") {
+      digitalWrite(yellowLED, HIGH);
+      delay(1000);
+      digitalWrite(yellowLED, LOW);
+    } else if (receivedSignal == "GREEN_GO") {
+      digitalWrite(greenLED, HIGH);
+      delay(1000);
+      digitalWrite(greenLED, LOW);
+    }
+  }
+}
+
+String readSignal() {
+  String signal;
+  unsigned long duration = 0;
+
+  while (duration < signalTimeout) {
+    int val = digitalRead(ldr);
+    if (val == HIGH) {
+      delay(10); // Debounce delay
+      if (digitalRead(ldr) == HIGH) { // Make sure it's stable
+        while (digitalRead(ldr) == HIGH) {
+          duration += 10; // Increment duration while signal is HIGH
+          delay(10);
+        }
+        if (duration >= 1000 && duration < 2000) {
+          signal = "RED_STOP";
+        } else if (duration >= 2000 && duration < 3000) {
+          signal = "YELLOW_READY";
+        } else if (duration >= 3000) {
+          signal = "GREEN_GO";
+        }
+        Serial.println("Received message: " + signal);
+        return signal;
+      }
+    }
+    delay(10);
+    duration += 10;
+  }
+  return ""; // Return empty string if no valid signal received
+}
