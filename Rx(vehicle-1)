@@ -28,8 +28,6 @@ void loop() {
   val = digitalRead(ldr); 
   if(val == HIGH) { 
     signal = "RED_STOP";
-    digitalWrite(redLED, HIGH); 
-    transmitSignal(signal);
     delay(500); 
   } 
   else {
@@ -37,18 +35,16 @@ void loop() {
   delay(1000);
   }
 
-  if(val == LOW) { 
+  if(val == High) { 
     signal = "YELLOW_READY";
     digitalWrite(redLED, HIGH);
-    transmitSignal(signal);
     delay(1000); 
   }
   
   
-  if(val == LOW) { 
+  if(val == High) { 
     signal = "GREEN_GO";
-    digitalWrite(redLED, HIGH); 
-    transmitSignal(signal);
+    digitalWrite(redLED, HIGH);
     delay(2000); 
   } 
   else {
@@ -90,7 +86,7 @@ void transmitSignal(String signal) {
       duration = ""; // Reset duration for the next signal
       break;
     } 
-    if(val2 == 1) { 
+    if(val2 == 0) { 
       duration = ""; // Reset duration if signal ends
       break; 
     } 
