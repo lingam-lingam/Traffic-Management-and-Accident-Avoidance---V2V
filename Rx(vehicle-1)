@@ -1,8 +1,4 @@
-#include <LiquidCrystal.h> 
-
-LiquidCrystal lcd(2, 3, 4, 5, 6, 7); 
-#define ldr 8 
-#define redLED 9 
+#include  
 
 int val;
 String duration;
@@ -11,85 +7,11 @@ String signal;
 void setup() { 
   Serial.begin(9600); 
   pinMode(ldr, INPUT_PULLUP); 
-  pinMode(redLED, OUTPUT); 
+   OUTPUT); 
   
   lcd.begin(16, 2); 
   lcd.clear(); 
-  lcd.print("LiFi Transmitter"); 
-  delay(3000); 
-  lcd.clear(); 
-  lcd.print("Send any message"); 
-  lcd.setCursor(0, 1); 
-  lcd.print("from LiFi App.."); 
-  delay(3000); 
-} 
-
-void loop() { 
-  val = digitalRead(ldr); 
-  if(val == HIGH) { 
-    signal = "RED_STOP";
-    delay(500); 
-  } 
-  else {
-  digitalWrite(redLED, LOW); 
-  delay(1000);
-  }
-
-  if(val == High) { 
-    signal = "YELLOW_READY";
-    digitalWrite(redLED, HIGH);
-    delay(1000); 
-  }
   
-  
-  if(val == High) { 
-    signal = "GREEN_GO";
-    digitalWrite(redLED, HIGH);
-    delay(2000); 
-  } 
-  else {
-  digitalWrite(redLED, LOW); 
-  
-  }
-}
-
-void transmitSignal(String signal) {
-  digitalWrite(redLED, HIGH); 
-  Serial.println("Sending message: " + signal); 
-  lcd.clear(); 
   lcd.print(signal); 
   delay(200); 
-  digitalWrite(redLED, LOW); 
-  delay(800); 
-  // Receiver code integrated here
-  while(val == 0) { 
-    int val2 = digitalRead(ldr); 
-    duration += val2; 
-    if(duration == "001") { 
-      Serial.println("Received message: RED_STOP"); 
-      lcd.clear(); 
-      lcd.print("RED_STOP"); 
-      duration = ""; // Reset duration for the next signal
-      break;
-    } 
-    if(duration == "0001") { 
-      Serial.println("Received message: YELLOW_READY"); 
-      lcd.clear(); 
-      lcd.print("YELLOW_READY"); 
-      duration = ""; // Reset duration for the next signal
-      break;
-    } 
-    if(duration == "00001") { 
-      Serial.println("Received message: GREEN_GO"); 
-      lcd.clear(); 
-      lcd.print("GREEN_GO"); 
-      duration = ""; // Reset duration for the next signal
-      break;
-    } 
-    if(val2 == 0) { 
-      duration = ""; // Reset duration if signal ends
-      break; 
-    } 
-    delay(200); 
-  }
-}
+  
