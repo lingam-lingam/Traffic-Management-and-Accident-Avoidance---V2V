@@ -2,38 +2,9 @@
 
 LiquidCrystal lcd(2, 3, 4, 5, 6, 7);
 #define ldr 2
-
-void setup() {
-  Serial.begin(9600);
-  pinMode(ldr, INPUT_PULLUP);
-  lcd.begin(16, 2);
-  lcd.clear();
-  lcd.print("LiFi Transmitter");
-  delay(3000);
-  lcd.clear();
-  lcd.print("Send messages");
-  lcd.setCursor(0, 1);
-  lcd.print("to LiFi Receiver..");
-  delay(3000);
-}
-
-void loop() {
-  lcd.clear();
-  lcd.print("Sending message:");
-  delay(2000);
-
-  sendMessage("RED_STOP");
-  delay(5000);
-  sendMessage("YELLO_READY");
-  delay(5000);
-  sendMessage("GREEN_GO");
-  
-  delay(5000); // Wait for 5 seconds before sending again
-}
-
-void sendMessage(String message) {
-  for (int i = 0; i < message.length(); i++) {
-    if (message.charAt(i) == '1') {
+ {
+  for (int i  0; i  message.length(); i) {
+     {
       digitalWrite(ldr, HIGH);
     } else {
       digitalWrite(ldr, LOW);
